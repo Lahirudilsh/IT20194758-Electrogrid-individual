@@ -13,7 +13,7 @@ import java.sql.*;
 		 try
 		 {
 			 Class.forName("com.mysql.jdbc.Driver");
-			 con= DriverManager.getConnection("jdbc:mysql://localhost:3306/paf-lab3", 
+			 con= DriverManager.getConnection("jdbc:mysql://localhost:3306/usermanagement", 
 					 "root", "");
 			 
 			 
@@ -29,7 +29,7 @@ import java.sql.*;
 		 return con;
 		}
 		
-		public String readItems()
+		public String readUsers()
 		{ 
 				String output = "";
 				
@@ -43,33 +43,33 @@ import java.sql.*;
 						} 
 					 
 			 // Prepare the html table to be displayed
-					 output = "<table border='1'><tr><th>Item Code</th>" 
-								 +"<th>Item Name</th><th>Item Price</th>"
-								 + "<th>Item Description</th>" 
+					 output = "<table border='1'><tr><th>User Name</th>" 
+								 +"<th>User NIC</th><th>Contact Number</th>"
+								 + "<th>User Type</th>" 
 								 + "<th>Update</th><th>Remove</th></tr>"; 
 					 
-					 String query = "select * from items"; 
+					 String query = "select * from userdetails"; 
 					 Statement stmt = con.createStatement(); 
 					 ResultSet rs = stmt.executeQuery(query); 
 					 
 			 // iterate through the rows in the result set
 					 while (rs.next()) 
 					 { 
-						 String itemID = Integer.toString(rs.getInt("itemID")); 
-						 String itemCode = rs.getString("itemCode"); 
-						 String itemName = rs.getString("itemName"); 
-						 String itemPrice = Double.toString(rs.getDouble("itemPrice")); 
-						 String itemDesc = rs.getString("itemDesc"); 
+						 String userID = Integer.toString(rs.getInt("userID")); 
+						 String userName = rs.getString("userName"); 
+						 String userNIC = rs.getString("userNIC"); 
+						 String contactNumber = Double.toString(rs.getDouble("contactNumber")); 
+						 String userType = rs.getString("userType"); 
 						 
 			 // Add a row into the html table
-						 output += "<tr><td><input id ='hidItemIDUpdate' name ='hidItemIDUpdate' type='hidden' value='" + itemID + " '>"	+ itemCode + "</td>";
+						 output += "<tr><td><input id ='hidItemIDUpdate' name ='hidItemIDUpdate' type='hidden' value='" + userID + " '>"	+ userName + "</td>";
 						
-						 output += "<td>" + itemName + "</td>"; 
-						 output += "<td>" + itemPrice + "</td>"; 
-						 output += "<td>" + itemDesc + "</td>";
+						 output += "<td>" + userNIC + "</td>"; 
+						 output += "<td>" + contactNumber + "</td>"; 
+						 output += "<td>" + userType + "</td>";
 			 // buttons
-						 output += "<td><input name='btnUpdate' id ='" + itemID + " ' type='button' value='Update' class=' btnUpdate btn btn-secondary'></td><td>"
-						 		+ "<input name='btnRemove' type='button' value='Remove' class='btnRemove btn btn-danger' data-rechearcherid='"+ itemID + " '>" + "</td></tr>";  
+						 output += "<td><input name='btnUpdate' id ='" + userID + " ' type='button' value='Update' class=' btnUpdate btn btn-secondary'></td><td>"
+						 		+ "<input name='btnRemove' type='button' value='Remove' class='btnRemove btn btn-danger' data-rechearcherid='"+ userID + " '>" + "</td></tr>";  
 					 } 
 					 con.close(); 
 					 
@@ -87,7 +87,7 @@ import java.sql.*;
 				return output; 
 		}
 
-		public String insertItem(String code, String name,String price, String desc)
+		public String insertUser(String username, String usernic,String contactnumber, String usertype)
 	    {
 				 String output = "";
 				 
@@ -101,24 +101,24 @@ import java.sql.*;
 					 }
 					 
 					 // create a prepared statement
-					 String query = " insert into items(`itemID`,`itemCode`,`itemName`,`itemPrice`,`itemDesc`)"+ " values (?, ?, ?, ?, ?)";
+					 String query = " insert into items(`userID`,`userName`,`userNIC`,`contactNumber`,`userType`)"+ " values (?, ?, ?, ?, ?)";
 				 
 				 
 					 PreparedStatement preparedStmt = con.prepareStatement(query);
 				 
 					 // binding values
 					 preparedStmt.setInt(1, 0);
-					 preparedStmt.setString(2, code);
-					 preparedStmt.setString(3, name);
-					 preparedStmt.setDouble(4, Double.parseDouble(price));
-					 preparedStmt.setString(5, desc);
+					 preparedStmt.setString(2, username);
+					 preparedStmt.setString(3, usernic);
+					 preparedStmt.setDouble(4, Double.parseDouble(contactnumber));
+					 preparedStmt.setString(5, usertype);
 				 
 				 
 					 // execute the statement
 					 preparedStmt.execute();
 					 con.close();
 					 
-					 String newItems = readItems();
+					 String newItems = readUsers();
 					 output = "{\"status\":\"success\", \"data\": \"" + newItems + "\"}";
 				 }
 				 catch (Exception e)
@@ -134,7 +134,7 @@ import java.sql.*;
 	     
 			
 	    }
-		public String updateItem(int itemID,String itemCode,String itemName,String itemPrice,String itemDesc)
+		public String updateUser(int userID,String userName,String userNIC,String contactNumber,String userType)
 		{ 
 				String output = ""; 
 				try
@@ -145,23 +145,23 @@ import java.sql.*;
 						 return "Error while connecting to the database for updating."; 
 					 } 
 				 // create a prepared statement
-					 String query = "update items set  itemCode = ?,  itemName = ?, itemPrice = ?, itemDesc = ? where itemID = ?"; 
+					 String query = "update items set  userName = ?,  userNIC = ?, contactNumber = ?, userType = ? where userID = ?"; 
 					 
 					 PreparedStatement preparedStmt = con.prepareStatement(query); 
 					 
 					 // binding values
-					 preparedStmt.setString(1, itemCode);
-					 preparedStmt.setString(2, itemName);
-					 preparedStmt.setDouble(3, Double.parseDouble(itemPrice));
-					 preparedStmt.setString(4, itemDesc);
-					 preparedStmt.setInt(5, itemID);
+					 preparedStmt.setString(1, userName);
+					 preparedStmt.setString(2, userNIC);
+					 preparedStmt.setDouble(3, Double.parseDouble(contactNumber));
+					 preparedStmt.setString(4, userType);
+					 preparedStmt.setInt(5, userID);
 
 
 					 // execute the statement
 					 preparedStmt.execute(); 
 					 con.close(); 
 					 
-					 String newItems = readItems();
+					 String newItems = readUsers();
 					 output = "{\"status\":\"success\", \"data\": \"" +newItems + "\"}";
 					
 				 } 
@@ -173,7 +173,7 @@ import java.sql.*;
 				return output; 
 		}
 
-		public String deleteItem(String itemIDData)
+		public String deleteUser(String userID)
 		{ 
 				String output = ""; 
 				try
@@ -184,18 +184,18 @@ import java.sql.*;
 						 return "Error while connecting to the database for deleting."; 
 					 } 
 				 // create a prepared statement
-					 String query = "delete from items where itemID=?"; 
+					 String query = "delete from userdetails where userID=?"; 
 					 PreparedStatement preparedStmt = con.prepareStatement(query); 
 					 // binding values
-					 preparedStmt.setInt(1, Integer.parseInt(itemIDData)); 
+					 preparedStmt.setInt(1, Integer.parseInt(userID)); 
 
 					 // execute the statement
 					 preparedStmt.execute(); 
 					 con.close(); 
 					
-					 String newItems = readItems();
+					 String newUsers = readUsers();
 					 output = "{\"status\":\"success\", \"data\": \"" +
-			 newItems + "\"}";
+			 newUsers + "\"}";
 					 
 				} 
 				catch (Exception e) 

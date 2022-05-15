@@ -29,10 +29,10 @@ public class ItemAPI extends HttpServlet{
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException
 	{
 			 System.out.println("requets recieved");
-		String output = itemobj.insertItem(request.getParameter("itemCode"),
-			 request.getParameter("itemName"),
-			request.getParameter("itemPrice"),
-			request.getParameter("itemDesc"));
+		String output = itemobj.insertUser(request.getParameter("userName"),
+			 request.getParameter("userNIC"),
+			request.getParameter("contactNumber"),
+			request.getParameter("userType"));
 			 
 			response.getWriter().write(output);
 	}
@@ -40,8 +40,8 @@ public class ItemAPI extends HttpServlet{
 	{
 			 Map paras = getParasMap(request);
 			 
-			 String output = itemobj.updateItem(Integer.parseInt(paras.get("hidItemIDSave").toString()),
-					 paras.get("itemCode").toString(),paras.get("itemName").toString(),paras.get("itemPrice").toString(),paras.get("itemDesc").toString());
+			 String output = itemobj.updateUser(Integer.parseInt(paras.get("hidItemIDSave").toString()),
+					 paras.get("userName").toString(),paras.get("userNIC").toString(),paras.get("contactNumber").toString(),paras.get("userType").toString());
 			 
 			response.getWriter().write(output);
 	} 
@@ -49,8 +49,8 @@ public class ItemAPI extends HttpServlet{
 	{
 			 Map paras = getParasMap(request);
 			 
-			 String output = itemobj.deleteItem(paras.get("itemID").toString().trim());
-			 System.out.println(paras.get("itemID").toString());
+			 String output = itemobj.deleteUser(paras.get("userID").toString().trim());
+			 System.out.println(paras.get("userID").toString());
 			 response.getWriter().write(output);
 	}
 	private static Map getParasMap(HttpServletRequest request)

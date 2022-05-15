@@ -55,7 +55,7 @@
 	<div id ="divItemsGrid">
 		<%
 			 Item itemObj = new Item(); 
-	 		 out.print(itemObj.readItems()); 
+	 		 out.print(itemObj.readUsers()); 
 		%>
     </div>
 
